@@ -27,11 +27,11 @@ describe('Escrow', () => {
 
         const Escrow = await ethers.getContractFactory('Escrow')
         escrow = await Escrow.deploy(
-            realEstate.address,
-            seller.address,
+            lender.address,
             inspector.address,
-            lender.address
-
+            buyer.address,
+            seller.address,
+            realEstate.address
         )
     })
 })
