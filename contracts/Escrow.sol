@@ -24,10 +24,19 @@ contract Escrow {
         _;
     }
 
+    modifier onlyInspector() {
+        require(
+            msg.sender == inspector,
+            "Only inspector can call this function"
+        );
+        _;
+    }
+
     mapping(uint256 => bool) public isListed;
     mapping(uint256 => uint256) public purchasePrice;
     mapping(uint256 => uint256) public escrowAmount;
     mapping(uint256 => address) public buyer;
+    mapping(uint256 => bool) public inspectionPassed;
 
     constructor(
         address _lender,
@@ -66,5 +75,13 @@ contract Escrow {
     //Get balance
     function getBalance() public view returns (uint256) {
         return address(this).balance;
+    }
+
+    //Update inspection status
+    function updateInspectionStatus(
+        uint256 _nftID,
+        bool _passed
+    ) public onlyInspector {
+        inspectionPassed[_nftID] = _passed;
     }
 }
