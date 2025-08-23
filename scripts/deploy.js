@@ -1,25 +1,20 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
+
 const hre = require("hardhat");
 
 const tokens = (n) => {
-  return ethers.utils.parseUnits(n.toString(), "ether");
+  return hre.ethers.utils.parseUnits(n.toString(), "ether");
 };
 
 async function main() {
   //Setup accounts
-  [buyer, seller, inspector, lender] = await ethers.getSigners();
+  const [buyer, seller, inspector, lender] = await hre.ethers.getSigners();
 
   //Deploy Real Estate
-  const RealEstate = await ethers.getContractFactory("RealEstate");
+  const RealEstate = await hre.ethers.getContractFactory("RealEstate");
   const realEstate = await RealEstate.deploy();
-  await realEstate.deployed();
 
   console.log("Real Estate deployed to: ", realEstate.address);
+  await realEstate.deployed();
   console.log("Minting 3 properties...");
 
   for (let i = 0; i < 3; i++) {
@@ -32,7 +27,7 @@ async function main() {
   }
 
   //Deploy Escrow
-  const Escrow = await ethers.getContractFactory("Escrow");
+  const Escrow = await hre.ethers.getContractFactory("Escrow");
   const escrow = await Escrow.deploy(
     lender.address,
     inspector.address,
