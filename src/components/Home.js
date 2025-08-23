@@ -54,7 +54,10 @@ const Home = ({ home, provider, account, escrow, togglePop }) => {
     if (await escrow.isListed(home.id)) return;
 
     const owner = await escrow.buyer(home.id);
-    setOwner(owner);
+    // Only set owner if there's actually a buyer (not zero address)
+    if (owner && owner !== "0x0000000000000000000000000000000000000000") {
+      setOwner(owner);
+    }
   };
 
   const buyHandler = async () => {
